@@ -2,6 +2,7 @@ import React from 'react';
 import {useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {ILLogo} from '../../assets';
+import {colors} from '../../utils/Color';
 
 // props.navigation berasal dari react-navigation yang dihubungkan di router
 const Splash = ({navigation}) => {
@@ -24,7 +25,7 @@ export default Splash;
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#112340',
+    color: colors.text.primary,
     marginTop: 20,
   },
 });

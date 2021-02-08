@@ -4,6 +4,8 @@ import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import {ILGetStarted, ILLogo} from '../../assets';
 
 import {Button, Gap} from '../../components';
+import {fonts} from '../../utils';
+import {colors} from '../../utils/Color';
 
 const GetStarted = ({navigation}) => {
   return (
@@ -36,14 +38,13 @@ const styles = StyleSheet.create({
   page: {
     padding: 40,
     justifyContent: 'space-between',
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     flex: 1,
   },
   text: {
     fontSize: 28,
-    fontFamily: 'Nunito-SemiBold',
-    // lineHeight: 33.6,
-    color: 'white',
+    fontFamily: fonts.primary[600],
+    color: colors.white,
     marginTop: 91,
   },
 });
