@@ -5,7 +5,7 @@ import {Button, Gap, Input, Link} from '../../components';
 import {fonts} from '../../utils';
 import {colors} from '../../utils/Color';
 
-const Login = () => {
+const Login = ({navigation}) => {
   return (
     <View style={styles.page}>
       <ILLogo />
@@ -16,7 +16,7 @@ const Login = () => {
       <Gap height={10} />
       <Link text="Forgot My Password" size={12} />
       <Gap height={40} />
-      <Button title="Sign In" />
+      <Button title="Sign In" onPress={() => navigation.replace('MainApp')} />
       <Gap height={30} />
       <Link text="Create New Account" size={16} align="center" />
     </View>
