@@ -1,14 +1,14 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import {IcArrowBack} from '../../../assets';
+import {IcArrowBack, IcArrowBackLight} from '../../../assets';
 
-const IconOnly = ({onPress, type}) => {
+const IconOnly = ({onPress, icon}) => {
   const Icon = () => {
-    if (type === 'back-dark') {
+    if (icon === 'back-dark') {
       return <IcArrowBack />;
     }
-    if (type === 'back-light') {
-      return <IcArrowBack />;
+    if (icon === 'back-light') {
+      return <IcArrowBackLight />;
     }
   };
   return (

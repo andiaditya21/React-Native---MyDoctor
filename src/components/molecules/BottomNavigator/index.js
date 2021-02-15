@@ -53,7 +53,10 @@ const BottomNavigator = ({state, descriptors, navigation}) => {
           //   style={{flex: 1}}>
           //   <Text style={{color: isFocused ? '#673ab7' : '#222'}}>{label}</Text>
           // </TouchableOpacity>
-          <TouchableOpacity onPress={onPress} onLongPress={onLongPress}>
+          <TouchableOpacity
+            onPress={onPress}
+            onLongPress={onLongPress}
+            key={index}>
             <TabItem key={index} title={label} active={isFocused} />
           </TouchableOpacity>
         );
