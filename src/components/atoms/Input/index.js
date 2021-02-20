@@ -3,7 +3,7 @@ import {StyleSheet, Text, TextInput, View} from 'react-native';
 import {fonts} from '../../../utils';
 import {colors} from '../../../utils/Color';
 
-const Input = ({label}) => {
+const Input = ({label, value, onChangeText, secureTextEntry, disable}) => {
   const [border, setBorder] = useState(colors.border.primary);
   const onFocusForm = () => {
     setBorder(colors.border.secondary);
@@ -18,6 +18,11 @@ const Input = ({label}) => {
         onFocus={onFocusForm}
         onBlur={onBlurForm}
         style={styles.input(border)}
+        value={value}
+        onChangeText={onChangeText}
+        secureTextEntry={secureTextEntry}
+        editable={!disable} // disable textinput
+        selectTextOnFocus={!disable}
       />
     </View>
   );

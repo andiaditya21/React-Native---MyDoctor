@@ -21,6 +21,7 @@ import {BottomNavigator} from '../components';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+// halaman utama apps yang menggunakan bottom tab navigation
 const MainApp = () => {
   return (
     <Tab.Navigator tabBar={(props) => <BottomNavigator {...props} />}>
@@ -31,6 +32,7 @@ const MainApp = () => {
   );
 };
 
+// routing keseluruhan apps
 const Router = () => {
   return (
     <Stack.Navigator initialRouteName="Splash">

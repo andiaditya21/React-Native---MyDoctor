@@ -3,14 +3,17 @@ const mainColor = {
   dark: '#112340',
   dark2: '#495A75',
   dark3: '#8092AF',
+  darkSky: 'rgba(0,0,0,0.5)',
   black: '#000000',
   grey: '#7D8797',
   grey2: '#B1B7C2',
+  grey3: '#B1B7C2',
   greySky: '#E9E9E9',
   blue: '#0066CB',
   blueSky: '#EDFCFD',
   white: '#FFFFFF',
   whiteSky: '#EDEEF0',
+  red: '#E06379',
 };
 
 export const colors = {
@@ -46,7 +49,13 @@ export const colors = {
   card: {
     primary: mainColor.blueSky,
   },
-  textInput: {background: mainColor.whiteSky, disable: mainColor.grey2},
+  textInput: {
+    background: mainColor.whiteSky,
+    disable: mainColor.grey2,
+    disableText: mainColor.grey3,
+  },
   chatMe: mainColor.blueSky,
   chatOther: mainColor.greenSky,
+  backgroundLoading: mainColor.darkSky,
+  error: mainColor.red,
 };

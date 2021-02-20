@@ -1,19 +1,47 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {DummyUser} from '../../assets';
+import {DummyUser, NullPhoto} from '../../assets';
 import {Gap} from '../../components/atoms';
 import {Header, List, Profile} from '../../components/molecules';
-import {colors} from '../../utils';
+import {colors, getData, showError} from '../../utils';
+import {Fire} from '../../config';
 
 const UserProfile = ({navigation}) => {
+  const [profile, setProfile] = useState({
+    fullName: '',
+    job: '',
+    photo: NullPhoto,
+  });
+  useEffect(() => {
+    getData('user').then((res) => {
+      // console.log('getdata', res);
+      const data = res;
+      // didalam res / data sudah terdapat photo, akan tetapi masih dalam base64/string. Jadi perlu dijadiin uri dulu
+      data.photo = {uri: res.photo};
+      setProfile(data);
+    });
+  }, []);
+
+  const signOut = () => {
+    Fire.auth()
+      .signOut()
+      .then(() => {
+        console.log('success logout');
+        navigation.replace('GetStarted');
+      })
+      .catch((err) => showError(err.message));
+  };
+
   return (
     <View style={styles.container}>
       <Header title="Profile" onPress={() => navigation.goBack()} />
-      <Profile
-        avatar={DummyUser}
-        name="Shayna Melinda"
-        desc="Product Designer"
-      />
+      {profile.fullName.length > 0 && (
+        <Profile
+          avatar={profile.photo}
+          name={profile.fullName}
+          desc={profile.job}
+        />
+      )}
       <Gap height={30} />
 
       <List
@@ -37,9 +65,10 @@ const UserProfile = ({navigation}) => {
       />
       <List
         type="next"
-        name="Help Center"
+        name="Sign Out"
         desc="Last update yesterday"
         icon="Read Our Guidelines"
+        onPress={signOut}
       />
     </View>
   );

@@ -1,15 +1,25 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
-import {DummyUser, IcRemovePhoto} from '../../../assets';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {IcRemovePhoto} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const Profile = ({name, desc, avatar, isRemove}) => {
+const Profile = ({name, desc, avatar, isRemove, onPress}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.borderAvatar}>
-        <Image source={avatar} style={styles.avatar} />
-        {isRemove && <IcRemovePhoto style={styles.icon} />}
-      </View>
+      {/* jika icon remove tidak ada, maka image tidak bisa diklik */}
+      {!isRemove && (
+        <View style={styles.borderAvatar}>
+          <Image source={avatar} style={styles.avatar} />
+          {isRemove && <IcRemovePhoto style={styles.icon} />}
+        </View>
+      )}
+      {/* jika icon remove ada, maka image bisa diklik  dan menjalankan ganti image*/}
+      {isRemove && (
+        <TouchableOpacity style={styles.borderAvatar} onPress={onPress}>
+          <Image source={avatar} style={styles.avatar} />
+          {isRemove && <IcRemovePhoto style={styles.icon} />}
+        </TouchableOpacity>
+      )}
       {name && (
         <View>
           <Text style={styles.name}>{name}</Text>

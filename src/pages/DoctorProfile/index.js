@@ -4,21 +4,25 @@ import {DummyDoctor6} from '../../assets';
 import {Button, Gap, Header, Profile, ProfileItem} from '../../components';
 import {colors} from '../../utils';
 
-const DoctorProfile = ({navigation}) => {
+const DoctorProfile = ({navigation, route}) => {
+  const dataDoctor = route.params;
   return (
     <View style={styles.page}>
       <Header title="Profile" onPress={() => navigation.goBack()} />
       <Profile
-        name="Nairobi Putri Hayza"
-        desc="Dokter Anak"
-        avatar={DummyDoctor6}
+        name={dataDoctor.data.fullName}
+        desc={dataDoctor.data.profession}
+        avatar={{uri: dataDoctor.data.photo}}
       />
       <Gap height={26} />
-      <ProfileItem label="Alumnus" value="Universitas Indonesia, 2020" />
+      <ProfileItem label="Alumnus" value={dataDoctor.data.university} />
       <Gap height={16} />
-      <ProfileItem label="Tempat Praktik" value="Rumah Sakit Umum, Bandung" />
+      <ProfileItem
+        label="Tempat Praktik"
+        value={dataDoctor.data.hospital_address}
+      />
       <Gap height={16} />
-      <ProfileItem label="No. STR" value="0000116622081996" />
+      <ProfileItem label="No. STR" value={dataDoctor.data.str_number} />
       <Gap height={23} />
       <View style={styles.wrapperBtn}>
         <Button

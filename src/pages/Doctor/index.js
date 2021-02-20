@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {
@@ -14,9 +14,63 @@ import {
   NewsItem,
   RatedDoctor,
 } from '../../components/molecules';
-import {colors, fonts} from '../../utils';
+import {colors, fonts, showError} from '../../utils';
+import {Fire} from '../../config';
 
 const Doctor = ({navigation}) => {
+  const [news, setNews] = useState([]);
+  const [categoryDoctor, setCategoryDoctor] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+
+  useEffect(() => {
+    getCategoryDoctor();
+    getTopRatedDoctor();
+    getNews();
+  }, []);
+
+  const getCategoryDoctor = () => {
+    Fire.database()
+      .ref('category_doctor')
+      .once('value')
+      .then((res) => setCategoryDoctor(res.val()))
+      .catch((err) => showError(err.message));
+  };
+
+  const getTopRatedDoctor = () => {
+    Fire.database()
+      .ref('doctors/')
+      .orderByChild('rate') // akan mengurutkan dari kecil -> besar
+      .limitToLast(3) // mengambil 3 terbawah (karena pengurutannya mulai dari terkecil -> terbesar)
+      .once('value')
+      .then((res) => {
+        if (res.val()) {
+          const oldData = res.val();
+          const data = [];
+          // mengubah obj menjadi array & membongkarnya menjadi per item (hanya mengambil judul keynya saja)
+          Object.keys(oldData).map((key) => {
+            // key berisi judul key dari per object DB
+            data.push({
+              id: key, // id diisi dengan key DB
+              data: oldData[key], //data diisi dengan data-data object DB tergantung key DBnya
+            });
+          });
+          setDoctors(data);
+        }
+      })
+      .catch((err) => showError(err.message));
+  };
+
+  const getNews = () => {
+    Fire.database()
+      .ref('news/')
+      .once('value')
+      .then((res) => {
+        if (res.val()) {
+          setNews(res.val());
+        }
+      })
+      .catch((err) => showError(err.message));
+  };
   return (
     <View style={styles.page}>
       <View style={styles.content}>
@@ -31,7 +85,7 @@ const Doctor = ({navigation}) => {
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={styles.doctorWrapper}>
                   <Gap width={16} />
-                  {JSONCategoryDoctor.data.map((item) => {
+                  {categoryDoctor.map((item) => {
                     return (
                       <DoctorCategory
                         key={item.id}
@@ -47,29 +101,29 @@ const Doctor = ({navigation}) => {
           </View>
           <View style={styles.wrapperRated}>
             <Text style={styles.title}>Top Rated Doctors</Text>
-            <RatedDoctor
-              name="Alexa Rachel"
-              desc="Pediatrician"
-              avatar={DummyDoctor1}
-              onPress={() => navigation.navigate('DoctorProfile')}
-            />
-            <RatedDoctor
-              name="Sunny Frank"
-              desc="Dentist"
-              avatar={DummyDoctor2}
-              onPress={() => navigation.navigate('DoctorProfile')}
-            />
-            <RatedDoctor
-              name="Poe Minn"
-              desc="Podiatrist"
-              avatar={DummyDoctor3}
-              onPress={() => navigation.navigate('DoctorProfile')}
-            />
+            {doctors.map((doctor) => {
+              return (
+                <RatedDoctor
+                  key={doctor.id}
+                  name={doctor.data.fullName}
+                  desc={doctor.data.profession}
+                  avatar={{uri: doctor.data.photo}}
+                  onPress={() => navigation.navigate('DoctorProfile', doctor)}
+                />
+              );
+            })}
             <Text style={styles.title}>Good News</Text>
           </View>
-          <NewsItem />
-          <NewsItem />
-          <NewsItem />
+          {news.map((item) => {
+            return (
+              <NewsItem
+                key={item.id}
+                title={item.title}
+                date={item.date}
+                cover={item.cover}
+              />
+            );
+          })}
           <Gap height={30} />
         </ScrollView>
       </View>
