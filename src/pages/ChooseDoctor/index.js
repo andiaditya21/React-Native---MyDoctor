@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   DummyDoctor4,
@@ -8,41 +8,54 @@ import {
   DummyDoctor8,
 } from '../../assets';
 import {Header, List} from '../../components';
+import {Fire} from '../../config';
 
-const ChooseDoctor = ({navigation}) => {
+const ChooseDoctor = ({navigation, route}) => {
+  const itemCategory = route.params;
+  const [listDoctor, setListDoctor] = useState([]);
+
+  useEffect(() => {
+    callDoctorByCategory(itemCategory.category);
+  }, []);
+
+  const callDoctorByCategory = (category) => {
+    Fire.database()
+      .ref('doctors/')
+      .orderByChild('category')
+      .equalTo(category)
+      .once('value')
+      .then((res) => {
+        // res.val() mengembalikan object data dari firebase. sebaiknya diubah menjadi array of object agar bisa di mapping
+        const oldData = res.val();
+        const data = [];
+        Object.keys(oldData).map((key) => {
+          data.push({
+            id: key,
+            data: oldData[key],
+          });
+        });
+        setListDoctor(data);
+      });
+  };
+
   return (
     <View>
       <Header
-        title="Pilih dokter anak"
+        title={`Pilih ${itemCategory.category}`}
         type="dark"
         onPress={() => navigation.goBack()}
       />
-      <List
-        type="next"
-        pic={DummyDoctor4}
-        name="Alexander Jannie"
-        desc="Wanita"
-        onPress={() => navigation.navigate('Chatting')}
-      />
-      <List
-        type="next"
-        pic={DummyDoctor5}
-        name="John McParker Steve"
-        desc="Pria"
-      />
-      <List
-        type="next"
-        pic={DummyDoctor6}
-        name="Nairobi Putri Hayza"
-        desc="Wanita"
-      />
-      <List type="next" pic={DummyDoctor7} name="James Rivillia" desc="Pria" />
-      <List
-        type="next"
-        pic={DummyDoctor8}
-        name="Liu Yue Tian Park"
-        desc="Wanita"
-      />
+      {listDoctor.map((doctor) => {
+        return (
+          <List
+            type="next"
+            pic={{uri: doctor.data.photo}}
+            name={doctor.data.fullName}
+            desc={doctor.data.gender}
+            onPress={() => navigation.navigate('Chatting')}
+          />
+        );
+      })}
     </View>
   );
 };

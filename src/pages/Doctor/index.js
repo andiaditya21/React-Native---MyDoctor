@@ -1,12 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {
-  DummyDoctor1,
-  DummyDoctor2,
-  DummyDoctor3,
-  JSONCategoryDoctor,
-} from '../../assets';
 import {Gap} from '../../components/atoms';
 import {
   DoctorCategory,
@@ -46,7 +40,7 @@ const Doctor = ({navigation}) => {
         if (res.val()) {
           const oldData = res.val();
           const data = [];
-          // mengubah obj menjadi array & membongkarnya menjadi per item (hanya mengambil judul keynya saja)
+          // mengubah obj menjadi array of object & membongkarnya menjadi per item (hanya mengambil judul keynya saja)
           Object.keys(oldData).map((key) => {
             // key berisi judul key dari per object DB
             data.push({
@@ -90,7 +84,9 @@ const Doctor = ({navigation}) => {
                       <DoctorCategory
                         key={item.id}
                         category={item.category}
-                        onPress={() => navigation.navigate('ChooseDoctor')}
+                        onPress={() =>
+                          navigation.navigate('ChooseDoctor', item)
+                        }
                       />
                     );
                   })}
