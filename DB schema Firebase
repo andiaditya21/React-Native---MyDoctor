@@ -1,0 +1,15 @@
+- chatting
+    - uidUser_uidDoctor
+        - all_chat
+            - chatDate ==> 2021-02-21
+                - uidChatting
+                    - sentBy
+                    - chatTime
+                    - chatDate
+                    - chatContent
+            - chatDate ==> 2021-02-22
+                - uidChatting
+                    - sentBy
+                    - chatTime
+                    - chatDate
+                    - chatContent

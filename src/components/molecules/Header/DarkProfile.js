@@ -5,15 +5,15 @@ import {DummyDoctor6} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 import {Button} from '../../atoms';
 
-const DarkProfile = ({onPress}) => {
+const DarkProfile = ({onPress, fullName, job, photo}) => {
   return (
     <View style={styles.container}>
       <Button type="icon-only" icon="back-light" onPress={onPress} />
       <View style={styles.content}>
-        <Text style={styles.name}>Nairobi Putri Hayza</Text>
-        <Text style={styles.spesialis}>Dokter Anak</Text>
+        <Text style={styles.name}>{fullName}</Text>
+        <Text style={styles.spesialis}>{job}</Text>
       </View>
-      <Image source={DummyDoctor6} style={styles.pic} />
+      <Image source={{uri: photo}} style={styles.pic} />
     </View>
   );
 };

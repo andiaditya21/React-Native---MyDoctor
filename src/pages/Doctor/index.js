@@ -26,7 +26,12 @@ const Doctor = ({navigation}) => {
     Fire.database()
       .ref('category_doctor')
       .once('value')
-      .then((res) => setCategoryDoctor(res.val()))
+      .then((res) => {
+        // dikarenakan kalau kita membuat sendiri DB secara manual di Firebase, maka di index pertama akan mereturn 'empty'. cara mengatasi itu adalah memfilter hasil data dari firebase kemudian berikan logic 'el tidak sama dengan null'
+        const data = res.val();
+        const filteredData = data.filter((el) => el !== null);
+        setCategoryDoctor(filteredData);
+      })
       .catch((err) => showError(err.message));
   };
 
@@ -60,7 +65,10 @@ const Doctor = ({navigation}) => {
       .once('value')
       .then((res) => {
         if (res.val()) {
-          setNews(res.val());
+          // dikarenakan kalau kita membuat sendiri DB secara manual di Firebase, maka di index pertama akan mereturn 'empty'. cara mengatasi itu adalah memfilter hasil data dari firebase kemudian berikan logic 'el tidak sama dengan null'
+          const data = res.val();
+          const filteredData = data.filter((el) => el !== null);
+          setNews(filteredData);
         }
       })
       .catch((err) => showError(err.message));
@@ -82,7 +90,7 @@ const Doctor = ({navigation}) => {
                   {categoryDoctor.map((item) => {
                     return (
                       <DoctorCategory
-                        key={item.id}
+                        key={`category-${item.id}`}
                         category={item.category}
                         onPress={() =>
                           navigation.navigate('ChooseDoctor', item)

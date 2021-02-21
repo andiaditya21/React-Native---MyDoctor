@@ -49,10 +49,11 @@ const ChooseDoctor = ({navigation, route}) => {
         return (
           <List
             type="next"
+            key={doctor.data.id}
             pic={{uri: doctor.data.photo}}
             name={doctor.data.fullName}
             desc={doctor.data.gender}
-            onPress={() => navigation.navigate('Chatting')}
+            onPress={() => navigation.navigate('DoctorProfile', doctor)}
           />
         );
       })}
