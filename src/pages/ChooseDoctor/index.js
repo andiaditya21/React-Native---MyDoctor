@@ -1,12 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {
-  DummyDoctor4,
-  DummyDoctor5,
-  DummyDoctor6,
-  DummyDoctor7,
-  DummyDoctor8,
-} from '../../assets';
 import {Header, List} from '../../components';
 import {Fire} from '../../config';
 
@@ -16,7 +9,7 @@ const ChooseDoctor = ({navigation, route}) => {
 
   useEffect(() => {
     callDoctorByCategory(itemCategory.category);
-  }, []);
+  }, [itemCategory.category]);
 
   const callDoctorByCategory = (category) => {
     Fire.database()
@@ -46,10 +39,11 @@ const ChooseDoctor = ({navigation, route}) => {
         onPress={() => navigation.goBack()}
       />
       {listDoctor.map((doctor) => {
+        console.log('doctor', doctor);
         return (
           <List
             type="next"
-            key={doctor.data.id}
+            key={doctor.id}
             pic={{uri: doctor.data.photo}}
             name={doctor.data.fullName}
             desc={doctor.data.gender}

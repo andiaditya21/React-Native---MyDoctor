@@ -66,10 +66,31 @@ const Chatting = ({navigation, route}) => {
     const idUserDoctor = `${user.uid}_${dataDoctor.data.uid}`;
     const urlDB = `chatting/${idUserDoctor}/all_chat/${getSendChat(today)}`;
 
+    // untuk historical message dengan partner chat (user / doctor)
+    const urlMessageUser = `message/${user.uid}/${idUserDoctor}`;
+    const urlMessageDoctor = `message/${dataDoctor.data.uid}/${idUserDoctor}`;
+    const historyChatForUser = {
+      lastChat: chatContent,
+      lastChatTime: new Date().getTime(),
+      uidPartner: dataDoctor.data.uid,
+    };
+    const historyChatForDoctor = {
+      lastChat: chatContent,
+      lastChatTime: new Date().getTime(),
+      uidPartner: user.uid,
+    };
+
     Fire.database()
       .ref(urlDB)
       .push(data)
-      .then((res) => setChatContent(''))
+      .then((res) => {
+        setChatContent('');
+        // set history chat for user to DB
+        Fire.database().ref(urlMessageUser).set(historyChatForUser);
+
+        // set history chat for doctor to DB
+        Fire.database().ref(urlMessageDoctor).set(historyChatForDoctor);
+      })
       .catch((err) => showError(err.message));
   };
   return (
@@ -88,17 +109,17 @@ const Chatting = ({navigation, route}) => {
               <View key={chat.id}>
                 <Text style={styles.dateChat}>{chat.id}</Text>
                 {chat.data.map((itemChat) => {
+                  const isMe = itemChat.data.sentBy === user.uid;
                   return (
                     <ChatItem
                       key={itemChat.id}
-                      isMe={itemChat.data.sentBy === user.uid}
+                      isMe={isMe}
                       text={itemChat.data.chatContent}
                       date={itemChat.data.chatTime}
+                      photo={isMe ? null : {uri: dataDoctor.data.photo}}
                     />
                   );
                 })}
-                {/* <ChatItem />
-                <ChatItem isMe /> */}
               </View>
             );
           })}

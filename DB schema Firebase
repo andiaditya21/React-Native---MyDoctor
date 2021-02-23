@@ -13,3 +13,16 @@
                     - chatTime
                     - chatDate
                     - chatContent
+
+- message
+    - uid ===> prawito (user)
+        - chatId
+            - lastChat
+            - lastChatTime
+            - uidPartner
+- message
+    - uid ===> mega (doctor)
+        - chatId
+            - lastChat
+            - lastChatTime
+            - uidPartner
